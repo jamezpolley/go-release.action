@@ -11,6 +11,7 @@ UPLOAD_URL=${UPLOAD_URL/\{?name,label\}/}
 RELEASE_NAME=$(echo $EVENT_DATA | jq -r .release.tag_name)
 PROJECT_NAME=$(basename $GITHUB_REPOSITORY)
 NAME="${PROJECT_NAME}_${RELEASE_NAME}_${GOOS}_${GOARCH}"
+TGZ_DIR="${TGZ_DIR:-}"
 
 EXT=''
 
@@ -18,7 +19,7 @@ if [ $GOOS == 'windows' ]; then
   EXT='.exe'
 fi
 
-tar cvfz tmp.tgz "${PROJECT_NAME}${EXT}"
+tar cvfz tmp.tgz "${PROJECT_NAME}${TGZ_DIR}${EXT}"
 CHECKSUM=$(md5sum tmp.tgz | cut -d ' ' -f 1)
 
 curl \
